@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDeliveryApp.Server", "FoodDeliveryApp.Server\FoodDeliveryApp.Server.csproj", "{5AC4B569-0CAD-4D4F-AD27-938439A56074}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "fooddeliveryapp.client", "FoodDeliveryApp.Client\fooddeliveryapp.client.esproj", "{B18DBA5C-6E94-4DFE-B720-6437FEDB736D}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "FoodDeliveryApp.Client", "FoodDeliveryApp.Client\FoodDeliveryApp.Client.esproj", "{B18DBA5C-6E94-4DFE-B720-6437FEDB736D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
