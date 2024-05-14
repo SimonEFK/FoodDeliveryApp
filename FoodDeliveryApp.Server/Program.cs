@@ -1,8 +1,14 @@
 namespace FoodDeliveryApp.Server
 {
+    using FoodDeliveryApp.Server.AppSettings;
     using FoodDeliveryApp.Server.Data;
+    using FoodDeliveryApp.Server.MappingProfiles;
+    using FoodDeliveryApp.Server.Services.Authentication;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Text;
 
     public class Program
     {
@@ -27,6 +33,34 @@ namespace FoodDeliveryApp.Server
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            builder.Services.AddAutoMapper(typeof(Program));
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+            builder.Services.AddTransient<IAuthenticateUserService, AuthenticateUserService>();
+
+
+            var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
+            builder.Services.Configure<JwtSettings>(jwtSettingsSection);
+
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
 
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             builder.Services.AddCors(options =>
@@ -35,14 +69,13 @@ namespace FoodDeliveryApp.Server
                 .AddPolicy(name: MyAllowSpecificOrigins,
                 policy =>
                 {
-                   policy
-                    .WithOrigins("https://localhost:5173")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
+                    policy
+                     .WithOrigins("https://localhost:5174")
+                     .AllowAnyHeader()
+                     .AllowAnyMethod();
                 });
             });
             builder.Services.AddControllers();
-
 
 
 

@@ -4,5 +4,6 @@
 
     public class ApplicationUser : IdentityUser
     {
+        public string Token { get; set; }
     }
 }

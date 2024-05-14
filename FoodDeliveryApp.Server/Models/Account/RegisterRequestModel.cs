@@ -1,8 +1,8 @@
-﻿namespace FoodDeliveryApp.Server.Models
+﻿namespace FoodDeliveryApp.Server.Models.Account
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class RegisterModel
+    public class RegisterRequestModel
     {
 
         [Required]
