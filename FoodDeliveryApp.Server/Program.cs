@@ -3,12 +3,12 @@ namespace FoodDeliveryApp.Server
     using FoodDeliveryApp.Server.AppSettings;
     using FoodDeliveryApp.Server.Data;
     using FoodDeliveryApp.Server.MappingProfiles;
-    using FoodDeliveryApp.Server.Services.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.IdentityModel.Tokens;
     using System.Text;
+    using static Extensions.WebApplicationBuilderServiceExtension;
 
     public class Program
     {
@@ -35,8 +35,8 @@ namespace FoodDeliveryApp.Server
 
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddAutoMapper(typeof(MappingProfile));
-            builder.Services.AddTransient<IAuthenticateUserService, AuthenticateUserService>();
 
+            builder.FoodDeliveryAppServices();
 
             var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
             builder.Services.Configure<JwtSettings>(jwtSettingsSection);
@@ -60,7 +60,6 @@ namespace FoodDeliveryApp.Server
                     ValidateAudience = false
                 };
             });
-
 
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
             builder.Services.AddCors(options =>

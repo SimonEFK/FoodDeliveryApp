@@ -1,14 +1,11 @@
 ﻿namespace FoodDeliveryApp.Server.Controllers
 {
     using AutoMapper;
-    using FoodDeliveryApp.Server.AppSettings;
     using FoodDeliveryApp.Server.Data;
     using FoodDeliveryApp.Server.Models.Account;
     using FoodDeliveryApp.Server.Services.Authentication;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Microsoft.Extensions.Options;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -50,6 +47,11 @@
         {
 
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
+
+            if (user is null)
+            {
+                return Unauthorized("Invalid Login Credentials");
+            }
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, loginModel.Password);
 
             if (!isPasswordValid) 
