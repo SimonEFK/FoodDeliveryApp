@@ -69,7 +69,7 @@ namespace FoodDeliveryApp.Server
                 policy =>
                 {
                     policy
-                     .WithOrigins("https://localhost:5174")
+                     .WithOrigins("https://localhost:5173")
                      .AllowAnyHeader()
                      .AllowAnyMethod();
                 });

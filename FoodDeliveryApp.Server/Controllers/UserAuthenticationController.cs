@@ -29,9 +29,7 @@
             var newUser = new ApplicationUser
             {
                 UserName = model.Email,
-                Email = model.Email,
-                EmailConfirmed = true
-
+                Email = model.Email,                
             };
             var result = await _userManager.CreateAsync(newUser, model.Password);
 
