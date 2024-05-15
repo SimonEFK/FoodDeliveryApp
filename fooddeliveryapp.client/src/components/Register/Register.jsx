@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const registerSchema = z
@@ -14,6 +15,7 @@ const registerSchema = z
   });
 
 const Register = () => {
+  const [registerState, setRegisterState] = useState("unknown");
   const onSubmit = async (data) => {
     let url = "https://localhost:44341/api/UserAuthentication/Register";
     let options = {
@@ -23,22 +25,45 @@ const Register = () => {
       },
       body: JSON.stringify(data),
     };
-
     const response = await fetch(url, options);
 
     if (response.ok) {
-      console.log(response);
+      setRegisterState("success");
+      reset();
     } else if (!response.ok) {
       const json = await response.json();
       if (json.errors) {
         const errors = json.errors;
+
         console.log(errors);
+
+        for (const key in errors) {
+          if (key.toLowerCase() === "email") {
+            for (const error of errors[key]) {
+              setError("email", {
+                type: "server",
+                message: error,
+              });
+            }
+          } else if (key.toLowerCase() === "password") {
+            for (const error of errors[key]) {
+              setError("password", {
+                type: "server",
+                message: error,
+              });
+            }
+          } else if (key.toLowerCase() === "confirmpassword") {
+            for (const error of errors[key]) {
+              setError("confirmPassword", {
+                type: "server",
+                message: error,
+              });
+            }
+          }
+        }
       }
     }
-
-    reset();
   };
-
   const {
     register,
     handleSubmit,
@@ -107,6 +132,12 @@ const Register = () => {
                 {isSubmitting ? "Loading" : "Submit"}
               </button>
             </form>
+
+            {registerState === "success" && (
+              <div className="alert alert-success" role="alert">
+                <span>Register successfully</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
