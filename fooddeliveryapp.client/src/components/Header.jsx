@@ -6,7 +6,7 @@ const Header = () => {
           <div className="container">
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
               <a
-                href="/"
+                link="/"
                 className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none"
               >
                 <svg
@@ -16,7 +16,7 @@ const Header = () => {
                   role="img"
                   aria-label="Bootstrap"
                 >
-                  <use xlink:href="#bootstrap" />
+                  <use xlinkHref="#bootstrap" />
                 </svg>
               </a>
 
@@ -28,7 +28,7 @@ const Header = () => {
                       width="24"
                       height="24"
                     >
-                      <use xlink:href="#home" />
+                      <use xlinkHref="#home" />
                     </svg>
                     Home
                   </a>
@@ -40,7 +40,7 @@ const Header = () => {
                       width="24"
                       height="24"
                     >
-                      <use xlink:href="#speedometer2" />
+                      <use xlinkHref="#speedometer2" />
                     </svg>
                     Dashboard
                   </a>
@@ -52,7 +52,7 @@ const Header = () => {
                       width="24"
                       height="24"
                     >
-                      <use xlink:href="#table" />
+                      <use xlinkHref="#table" />
                     </svg>
                     Orders
                   </a>
@@ -64,7 +64,7 @@ const Header = () => {
                       width="24"
                       height="24"
                     >
-                      <use xlink:href="#grid" />
+                      <use xlinkHref="#grid" />
                     </svg>
                     Products
                   </a>
@@ -76,7 +76,7 @@ const Header = () => {
                       width="24"
                       height="24"
                     >
-                      <use xlink:href="#people-circle" />
+                      <use xlinkHref="#people-circle" />
                     </svg>
                     Customers
                   </a>
