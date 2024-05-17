@@ -12,7 +12,7 @@
     public class UserAuthenticationController : ControllerBase
     {
 
-        private readonly UserManager<ApplicationUser> _userManager;        
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAuthenticateUserService authenticateUserService;
         private readonly IMapper mapper;
 
@@ -29,13 +29,16 @@
             var newUser = new ApplicationUser
             {
                 UserName = model.Email,
-                Email = model.Email,                
+                Email = model.Email,
             };
             var result = await _userManager.CreateAsync(newUser, model.Password);
 
             if (!result.Succeeded)
             {
-                return BadRequest(result.Errors);
+                return BadRequest(new
+                {
+                    Errors = result.Errors.Select(x => x.Description).ToList()
+                });
             }
             return Ok();
         }
@@ -52,14 +55,14 @@
             }
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, loginModel.Password);
 
-            if (!isPasswordValid) 
+            if (!isPasswordValid)
             {
                 return Unauthorized("Invalid Login Credentials");
             }
             var token = authenticateUserService.AuthenticateUser(user);
-            
+
             var loginResponseModel = mapper.Map<LoginResponseModel>(user);
-            
+
             return Ok(loginResponseModel);
         }
     }

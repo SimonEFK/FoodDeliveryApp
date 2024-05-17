@@ -16,6 +16,7 @@ const registerSchema = z
 
 const Register = () => {
   const [registerState, setRegisterState] = useState("unknown");
+
   const onSubmit = async (data) => {
     let url = "https://localhost:44341/api/UserAuthentication/Register";
     let options = {
@@ -25,43 +26,38 @@ const Register = () => {
       },
       body: JSON.stringify(data),
     };
-    const response = await fetch(url, options);
 
-    if (response.ok) {
-      setRegisterState("success");
-      reset();
-    } else if (!response.ok) {
+    try {
+      const response = await fetch(url, options);
       const json = await response.json();
-      if (json.errors) {
-        const errors = json.errors;
-
-        console.log(errors);
-
-        for (const key in errors) {
-          if (key.toLowerCase() === "email") {
-            for (const error of errors[key]) {
-              setError("email", {
-                type: "server",
-                message: error,
-              });
-            }
-          } else if (key.toLowerCase() === "password") {
-            for (const error of errors[key]) {
-              setError("password", {
-                type: "server",
-                message: error,
-              });
-            }
-          } else if (key.toLowerCase() === "confirmpassword") {
-            for (const error of errors[key]) {
-              setError("confirmPassword", {
-                type: "server",
-                message: error,
-              });
-            }
+      if (!response.ok) {
+        if (json.errors) {
+          for (const error of json.errors) {
+            setError("root", {
+              type: "400",
+              message: error,
+            });
           }
         }
+        return;
       }
+      setRegisterState("success");
+    } catch (error) {
+      setError("root", {
+        type: "400",
+        message: "unexpected server error please try again",
+      });
+    } finally {
+      reset(
+        {
+          email: "",
+          password: "",
+          confirmPassword: "",
+        },
+        {
+          keepErrors: true,
+        }
+      );
     }
   };
   const {
@@ -126,6 +122,9 @@ const Register = () => {
                   <span className="text-danger">
                     {errors.confirmPassword.message}
                   </span>
+                )}
+                {errors.root && (
+                  <span className="text-danger">{errors.root.message}</span>
                 )}
               </div>
               <button disabled={isSubmitting} className="btn btn-primary mt-3">
