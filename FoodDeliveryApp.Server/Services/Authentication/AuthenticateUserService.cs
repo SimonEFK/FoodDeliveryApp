@@ -1,7 +1,7 @@
 ﻿namespace FoodDeliveryApp.Server.Services.Authentication
 {
     using FoodDeliveryApp.Server.AppSettings;
-    using FoodDeliveryApp.Server.Data;
+    using FoodDeliveryApp.Server.Data.Models;
     using FoodDeliveryApp.Server.Models.Account;
     using Microsoft.AspNetCore.Identity.Data;
     using Microsoft.EntityFrameworkCore;

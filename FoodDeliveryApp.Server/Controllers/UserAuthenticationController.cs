@@ -1,7 +1,7 @@
 ﻿namespace FoodDeliveryApp.Server.Controllers
 {
     using AutoMapper;
-    using FoodDeliveryApp.Server.Data;
+    using FoodDeliveryApp.Server.Data.Models;
     using FoodDeliveryApp.Server.Models.Account;
     using FoodDeliveryApp.Server.Services.Authentication;
     using Microsoft.AspNetCore.Identity;

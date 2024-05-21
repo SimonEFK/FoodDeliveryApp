@@ -2,6 +2,7 @@ namespace FoodDeliveryApp.Server
 {
     using FoodDeliveryApp.Server.AppSettings;
     using FoodDeliveryApp.Server.Data;
+    using FoodDeliveryApp.Server.Data.Models;
     using FoodDeliveryApp.Server.MappingProfiles;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Identity;
@@ -19,7 +20,7 @@ namespace FoodDeliveryApp.Server
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseNpgsql(connectionString).UseSnakeCaseNamingConvention());
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>

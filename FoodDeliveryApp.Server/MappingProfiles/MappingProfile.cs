@@ -1,7 +1,7 @@
 ﻿namespace FoodDeliveryApp.Server.MappingProfiles
 {
     using AutoMapper;
-    using FoodDeliveryApp.Server.Data;
+    using FoodDeliveryApp.Server.Data.Models;
     using FoodDeliveryApp.Server.Models.Account;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 

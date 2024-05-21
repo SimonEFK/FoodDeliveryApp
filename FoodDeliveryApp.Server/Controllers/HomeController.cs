@@ -1,6 +1,6 @@
 namespace FoodDeliveryApp.Server.Controllers
 {
-    
+
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
 
@@ -11,8 +11,9 @@ namespace FoodDeliveryApp.Server.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            var user = this.HttpContext.User;
             return Ok();
         }
-        
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace FoodDeliveryApp.Server.Services.Authentication
 {
-    using FoodDeliveryApp.Server.Data;
+    using FoodDeliveryApp.Server.Data.Models;
 
     public interface IAuthenticateUserService
     {

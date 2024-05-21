@@ -1,4 +1,4 @@
-﻿namespace FoodDeliveryApp.Server.Data
+﻿namespace FoodDeliveryApp.Server.Data.Models
 {
     using Microsoft.AspNetCore.Identity;
 
