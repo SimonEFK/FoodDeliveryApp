@@ -29,8 +29,8 @@ const Register = () => {
 
     try {
       const response = await fetch(url, options);
-      const json = await response.json();
       if (!response.ok) {
+        const json = await response.json();
         if (json.errors) {
           for (const error of json.errors) {
             setError("root", {
@@ -39,7 +39,6 @@ const Register = () => {
             });
           }
         }
-        return;
       }
       setRegisterState("success");
     } catch (error) {
@@ -72,72 +71,70 @@ const Register = () => {
 
   return (
     <>
-      <div className="container">
-        <div className="row">
-          <div className="col-4">
-            <span className="fs-1">Register</span>
-            <form
-              action="https://localhost:44341/api/UserAuthentication/Register"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <div>
-                <label htmlFor="email" className="form-label">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  className="form-control form-control-lg"
-                  {...register("email")}
-                />
-                {errors.email && (
-                  <span className="text-danger">{errors.email.message}</span>
-                )}
-              </div>
+      <div className="row justify-content-center">
+        <div className="col-4">
+          <span className="fs-1">Register</span>
+          <form
+            action="https://localhost:44341/api/UserAuthentication/Register"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div>
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <input
+                id="email"
+                className="form-control form-control-lg"
+                {...register("email")}
+              />
+              {errors.email && (
+                <span className="text-danger">{errors.email.message}</span>
+              )}
+            </div>
 
-              <div>
-                <label htmlFor="password" className="form-label">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  className="form-control form-control-lg"
-                  {...register("password")}
-                />
-                {errors.password && (
-                  <span className="text-danger">{errors.password.message}</span>
-                )}
-              </div>
-              <div>
-                <label htmlFor="confirmPassword" className="form-label">
-                  Confirm Password
-                </label>
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  className="form-control form-control-lg"
-                  {...register("confirmPassword")}
-                />
-                {errors.confirmPassword && (
-                  <span className="text-danger">
-                    {errors.confirmPassword.message}
-                  </span>
-                )}
-                {errors.root && (
-                  <span className="text-danger">{errors.root.message}</span>
-                )}
-              </div>
-              <button disabled={isSubmitting} className="btn btn-primary mt-3">
-                {isSubmitting ? "Loading" : "Submit"}
-              </button>
-            </form>
+            <div>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                className="form-control form-control-lg"
+                {...register("password")}
+              />
+              {errors.password && (
+                <span className="text-danger">{errors.password.message}</span>
+              )}
+            </div>
+            <div>
+              <label htmlFor="confirmPassword" className="form-label">
+                Confirm Password
+              </label>
+              <input
+                id="confirmPassword"
+                type="password"
+                className="form-control form-control-lg"
+                {...register("confirmPassword")}
+              />
+              {errors.confirmPassword && (
+                <span className="text-danger">
+                  {errors.confirmPassword.message}
+                </span>
+              )}
+              {errors.root && (
+                <span className="text-danger">{errors.root.message}</span>
+              )}
+            </div>
+            <button disabled={isSubmitting} className="btn btn-primary mt-3">
+              {isSubmitting ? "Loading" : "Submit"}
+            </button>
+          </form>
 
-            {registerState === "success" && (
-              <div className="alert alert-success" role="alert">
-                <span>Register successfully</span>
-              </div>
-            )}
-          </div>
+          {registerState === "success" && (
+            <div className="alert alert-success mt-3" role="alert">
+              <span>Register successfully</span>
+            </div>
+          )}
         </div>
       </div>
     </>
