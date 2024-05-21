@@ -22,5 +22,14 @@
         }
 
         public DbSet<Restaurant> Restaurants { get; set; }
+
+        public DbSet<Menu> Menus { get; set; }
+
+        public DbSet<Item> Items { get; set; }
+
+        public DbSet<MenuItem> MenuItems { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
     }
 }

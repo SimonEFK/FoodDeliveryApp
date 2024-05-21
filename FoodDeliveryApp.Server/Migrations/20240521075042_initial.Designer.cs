@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FoodDeliveryApp.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240521055555_initial")]
+    [Migration("20240521075042_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -109,6 +109,118 @@ namespace FoodDeliveryApp.Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("integer")
+                        .HasColumnName("parent_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_categories");
+
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_categories_parent_id");
+
+                    b.ToTable("categories", (string)null);
+                });
+
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("numeric")
+                        .HasColumnName("price");
+
+                    b.HasKey("Id")
+                        .HasName("pk_items");
+
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_items_category_id");
+
+                    b.ToTable("items", (string)null);
+                });
+
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Menu", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id");
+
+                    b.Property<string>("RestaurantId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("restaurant_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_menus");
+
+                    b.HasIndex("RestaurantId")
+                        .HasDatabaseName("ix_menus_restaurant_id");
+
+                    b.ToTable("menus", (string)null);
+                });
+
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.MenuItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("integer")
+                        .HasColumnName("item_id");
+
+                    b.Property<string>("MenuId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("menu_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_menu_items");
+
+                    b.HasIndex("ItemId")
+                        .HasDatabaseName("ix_menu_items_item_id");
+
+                    b.HasIndex("MenuId")
+                        .HasDatabaseName("ix_menu_items_menu_id");
+
+                    b.ToTable("menu_items", (string)null);
+                });
+
             modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Restaurant", b =>
                 {
                     b.Property<string>("Id")
@@ -116,7 +228,6 @@ namespace FoodDeliveryApp.Server.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("image_url");
 
@@ -295,6 +406,61 @@ namespace FoodDeliveryApp.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Category", b =>
+                {
+                    b.HasOne("FoodDeliveryApp.Server.Data.Models.Category", "Parent")
+                        .WithMany("Categories")
+                        .HasForeignKey("ParentId")
+                        .HasConstraintName("fk_categories_categories_parent_id");
+
+                    b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Item", b =>
+                {
+                    b.HasOne("FoodDeliveryApp.Server.Data.Models.Category", "Category")
+                        .WithMany("Items")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_items_categories_category_id");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Menu", b =>
+                {
+                    b.HasOne("FoodDeliveryApp.Server.Data.Models.Restaurant", "Restaurant")
+                        .WithMany("Menus")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_menus_restaurants_restaurant_id");
+
+                    b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.MenuItem", b =>
+                {
+                    b.HasOne("FoodDeliveryApp.Server.Data.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_menu_items_items_item_id");
+
+                    b.HasOne("FoodDeliveryApp.Server.Data.Models.Menu", "Menu")
+                        .WithMany("MenuItems")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_menu_items_menus_menu_id");
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Menu");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -350,6 +516,23 @@ namespace FoodDeliveryApp.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
+                });
+
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Category", b =>
+                {
+                    b.Navigation("Categories");
+
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Menu", b =>
+                {
+                    b.Navigation("MenuItems");
+                });
+
+            modelBuilder.Entity("FoodDeliveryApp.Server.Data.Models.Restaurant", b =>
+                {
+                    b.Navigation("Menus");
                 });
 #pragma warning restore 612, 618
         }
