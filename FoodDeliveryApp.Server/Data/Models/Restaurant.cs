@@ -9,6 +9,6 @@
 
         public string? ImageUrl { get; set; }
 
-        public ICollection<Menu> Menus { get; set; } = new HashSet<Menu>();
+        public Menu Menu { get; set; } 
     }
 }
