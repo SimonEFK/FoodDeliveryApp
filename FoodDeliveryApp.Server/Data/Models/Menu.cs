@@ -8,6 +8,6 @@
 
         public string RestaurantId { get; set; }
 
-        public ICollection<Item> Items { get; set; } = new HashSet<Item>();
+        public ICollection<MenuItem> MenuItems { get; set; } = new HashSet<MenuItem>();
     }
 }
