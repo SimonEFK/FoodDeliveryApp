@@ -2,8 +2,8 @@
 {
     using FoodDeliveryApp.Server.Data.Models;
 
-    public interface IAuthenticateUserService
+    public interface IJwtTokenGenerator
     {
-        string AuthenticateUser(ApplicationUser applicationUser);
+        public string GenerateToken(ApplicationUser user);
     }
 }

@@ -8,7 +8,7 @@
 
         public static void FoodDeliveryAppServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddTransient<IAuthenticateUserService, AuthenticateUserService>();
+            builder.Services.AddTransient<IJwtTokenGenerator, JWtTokenGenerator>();
             builder.Services.AddTransient<IRestaurantService, RestaurantService>();
         }
     }

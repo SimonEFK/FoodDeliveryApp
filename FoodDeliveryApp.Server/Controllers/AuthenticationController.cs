@@ -9,17 +9,17 @@
 
     [Route("api/[controller]")]
     [ApiController]
-    public class UserAuthenticationController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
 
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IAuthenticateUserService authenticateUserService;
+        private readonly IJwtTokenGenerator jwtTokenGenerator;
         private readonly IMapper mapper;
 
-        public UserAuthenticationController(UserManager<ApplicationUser> userManager, IAuthenticateUserService authenticateUserService, IMapper mapper)
+        public AuthenticationController(UserManager<ApplicationUser> userManager, IJwtTokenGenerator jwtTokenGenerator, IMapper mapper)
         {
             _userManager = userManager;
-            this.authenticateUserService = authenticateUserService;
+            this.jwtTokenGenerator = jwtTokenGenerator;
             this.mapper = mapper;
         }
 
@@ -59,7 +59,7 @@
             {
                 return Unauthorized("Invalid Login Credentials");
             }
-            var token = authenticateUserService.AuthenticateUser(user);
+            var token = jwtTokenGenerator.GenerateToken(user);
 
             var loginResponseModel = mapper.Map<LoginResponseModel>(user);
 
