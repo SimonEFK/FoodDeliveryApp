@@ -72,19 +72,6 @@ namespace FoodDeliveryApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "restaurants",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "text", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    image_url = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_restaurants", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -191,6 +178,47 @@ namespace FoodDeliveryApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "restaurants",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    image_url = table.Column<string>(type: "text", nullable: true),
+                    user_id = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_restaurants", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_restaurants_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "items",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    price = table.Column<decimal>(type: "numeric", nullable: true),
+                    description = table.Column<string>(type: "text", nullable: true),
+                    category_id = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_items", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_items_categories_category_id",
+                        column: x => x.category_id,
+                        principalTable: "categories",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "menus",
                 columns: table => new
                 {
@@ -209,31 +237,29 @@ namespace FoodDeliveryApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "items",
+                name: "menu_item",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    price = table.Column<decimal>(type: "numeric", nullable: true),
-                    description = table.Column<string>(type: "text", nullable: true),
-                    category_id = table.Column<int>(type: "integer", nullable: false),
-                    menu_id = table.Column<string>(type: "text", nullable: true)
+                    item_id = table.Column<int>(type: "integer", nullable: false),
+                    menu_id = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_items", x => x.id);
+                    table.PrimaryKey("pk_menu_item", x => x.id);
                     table.ForeignKey(
-                        name: "fk_items_categories_category_id",
-                        column: x => x.category_id,
-                        principalTable: "categories",
+                        name: "fk_menu_item_items_item_id",
+                        column: x => x.item_id,
+                        principalTable: "items",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_items_menus_menu_id",
+                        name: "fk_menu_item_menus_menu_id",
                         column: x => x.menu_id,
                         principalTable: "menus",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -284,15 +310,24 @@ namespace FoodDeliveryApp.Server.Migrations
                 column: "category_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_items_menu_id",
-                table: "items",
+                name: "ix_menu_item_item_id",
+                table: "menu_item",
+                column: "item_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_menu_item_menu_id",
+                table: "menu_item",
                 column: "menu_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_menus_restaurant_id",
                 table: "menus",
-                column: "restaurant_id",
-                unique: true);
+                column: "restaurant_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_restaurants_user_id",
+                table: "restaurants",
+                column: "user_id");
         }
 
         /// <inheritdoc />
@@ -314,22 +349,25 @@ namespace FoodDeliveryApp.Server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "items");
+                name: "menu_item");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "categories");
+                name: "items");
 
             migrationBuilder.DropTable(
                 name: "menus");
 
             migrationBuilder.DropTable(
+                name: "categories");
+
+            migrationBuilder.DropTable(
                 name: "restaurants");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

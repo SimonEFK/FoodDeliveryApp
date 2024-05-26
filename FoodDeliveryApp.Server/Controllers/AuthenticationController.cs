@@ -2,7 +2,7 @@
 {
     using AutoMapper;
     using FoodDeliveryApp.Server.Data.Models;
-    using FoodDeliveryApp.Server.Models.Account;
+    using FoodDeliveryApp.Server.Models.Authentication;
     using FoodDeliveryApp.Server.Services.Authentication;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -40,7 +40,10 @@
                     Errors = result.Errors.Select(x => x.Description).ToList()
                 });
             }
-            return Ok();
+            return Ok(new
+            {
+                result.Succeeded,
+            });
         }
 
         [HttpPost("Login")]

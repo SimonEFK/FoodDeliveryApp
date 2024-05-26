@@ -2,6 +2,7 @@
 {
     using FoodDeliveryApp.Server.Services;
     using FoodDeliveryApp.Server.Services.Authentication;
+    using FoodDeliveryApp.Server.Services.Resturant;
 
     public static class WebApplicationBuilderServiceExtension
     {

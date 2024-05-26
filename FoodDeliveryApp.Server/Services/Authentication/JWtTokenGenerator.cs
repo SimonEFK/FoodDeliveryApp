@@ -1,7 +1,7 @@
 ﻿namespace FoodDeliveryApp.Server.Services.Authentication
 {
-    using FoodDeliveryApp.Server.AppSettings;
     using FoodDeliveryApp.Server.Data.Models;
+    using FoodDeliveryApp.Server.Settings;
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
     using System.IdentityModel.Tokens.Jwt;

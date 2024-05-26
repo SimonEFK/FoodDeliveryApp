@@ -14,6 +14,8 @@
 
         public int? CategoryId { get; set; }
 
+        public string? ImageUrl { get; set; }
+
         public ICollection<MenuItem> Menus { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 namespace FoodDeliveryApp.Server
 {
-    using FoodDeliveryApp.Server.AppSettings;
     using FoodDeliveryApp.Server.Data;
     using FoodDeliveryApp.Server.Data.Models;
     using FoodDeliveryApp.Server.MappingProfiles;
+    using FoodDeliveryApp.Server.Settings;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-﻿namespace FoodDeliveryApp.Server.AppSettings
+﻿namespace FoodDeliveryApp.Server.Settings
 {
     public class JwtSettings
     {

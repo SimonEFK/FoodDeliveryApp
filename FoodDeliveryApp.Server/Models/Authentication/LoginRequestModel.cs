@@ -1,4 +1,4 @@
-﻿namespace FoodDeliveryApp.Server.Models.Account
+﻿namespace FoodDeliveryApp.Server.Models.Authentication
 {
     using System.ComponentModel.DataAnnotations;
 
