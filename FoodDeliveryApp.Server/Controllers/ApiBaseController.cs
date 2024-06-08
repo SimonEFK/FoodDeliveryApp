@@ -8,7 +8,6 @@
 
     [ApiController]
     [Authorize]
-    [Route("api/[controller]")]
     public abstract class ApiBaseController : ControllerBase
     {
 

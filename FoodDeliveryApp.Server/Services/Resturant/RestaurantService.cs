@@ -5,8 +5,7 @@
     using FoodDeliveryApp.Server.Data;
     using FoodDeliveryApp.Server.Data.Models;
     using FoodDeliveryApp.Server.Models.Restaurant;
-    using FoodDeliveryApp.Server.Models.Restaurant.MenuItem;
-    using Microsoft.AspNetCore.Mvc;
+    using FoodDeliveryApp.Server.Models.Restaurant.Menu;
     using Microsoft.EntityFrameworkCore;
 
     public class RestaurantService : IRestaurantService
@@ -20,58 +19,50 @@
             this.mapper = mapper;
         }
 
-        public async Task<string> CreateRestaurant(string userId, RestaurantCreateRequestModel model)
+        public async Task<string> CreateRestaurant(CreateRestaurantRequestModel model, string userId)
         {
-            var newRestaurant = new Restaurant()
+            var newRestaurant = new Restaurant
             {
-                UserId = userId,
                 Name = model.Name.Trim(),
-                ImageUrl = model.ImageUrl?.Trim(),
+                Description = model.Description.Trim(),
+                UserId = userId,
+                ImageUrl = model.ImageUrl.Trim(),
             };
-
             newRestaurant.Menus.Add(new Menu());
             await _context.Restaurants.AddAsync(newRestaurant);
             await _context.SaveChangesAsync();
             return newRestaurant.Id;
         }
 
-        [HttpGet("api/restaurants/{id?}")]
-        public async Task<ICollection<TModel>> GetRestaurants<TModel>(string? id = null)
+        public async Task AddItemToRestaurantMenu(CreateItemRequestModel model, string restaurantId, string applicationUserId)
         {
-            var restaurants = await _context
-                .Restaurants
-                .ProjectTo<TModel>(mapper.ConfigurationProvider)
-                .ToListAsync();
+            var restaurant = _context.Restaurants
+                .Where(x => x.UserId == applicationUserId && x.Id == restaurantId)
+                .Select(x => x.Menus.FirstOrDefault())
+                .FirstOrDefault();
 
-            return restaurants;
-        }
-
-        public async Task AddItemToRestaurant(string userId, string restaurantId, MenuItemCreateRequestModel itemModel)
-        {
-            var menu = await _context.Menus
-                .Where(x => x.RestaurantId == restaurantId && x.Restaurant.UserId == userId).FirstOrDefaultAsync();
-
-            if (menu == null)
+            var newItem = new Item()
             {
-                //TODO
-            }
-
-            var item = new Item
-            {
-                Name = itemModel.Name.Trim(),
-                Price = itemModel.Price,
-                Description = itemModel.Description,
-                //CategoryId = itemModel.CategoryId,
-                ImageUrl = itemModel.ImageUrl
+                Name = model.Name.Trim(),
+                ImageUrl = model.ImageUrl.Trim(),
+                Price = model.Price.Value,
+                Categories = model.Categories.Select(x => new Category
+                {
+                    Id = x
+                }).ToList(),
             };
-            menu.MenuItems.Add(new MenuItem
-            {
-                Item = item,
-            });
+
+
+            restaurant.Items.Add(newItem);
             await _context.SaveChangesAsync();
         }
 
+        public async Task<ICollection<T>> GetRestaurants<T>()
+        {
+            var result = await _context.Restaurants.ProjectTo<T>(mapper.ConfigurationProvider).ToListAsync();
 
+            return result;
+        }
 
     }
 }

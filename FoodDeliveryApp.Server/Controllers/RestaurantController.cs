@@ -1,14 +1,12 @@
 ﻿namespace FoodDeliveryApp.Server.Controllers
 {
     using FoodDeliveryApp.Server.Models.Restaurant;
-    using FoodDeliveryApp.Server.Models.Restaurant.MenuItem;
-    using FoodDeliveryApp.Server.Models.Restaurant.RestaurantListing;
-    using FoodDeliveryApp.Server.Services;
+    using FoodDeliveryApp.Server.Models.Restaurant.Menu;
     using FoodDeliveryApp.Server.Services.Resturant;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-
+    [AllowAnonymous]
     public class RestaurantController : ApiBaseController
     {
         private readonly IRestaurantService restaurantService;
@@ -18,37 +16,33 @@
             this.restaurantService = restaurantService;
         }
 
-        [HttpPost("/api/restaurants")]
-        public async Task<IActionResult> CreateRestaurant(RestaurantCreateRequestModel model)
+
+        [AllowAnonymous]
+        [HttpGet("/api/restaurants")]
+        public async Task<IActionResult> GetRestaurants()
         {
-            var userId = this.GetUserId();
-            if (userId == null)
-            {
-                return BadRequest("");
-            }
+            var restaurants = await restaurantService.GetRestaurants<RestaurantResponseModel>();
 
-            var result = await this.restaurantService.CreateRestaurant(userId, model);
-            var response = new RestaurantCreateResponseModel { Id = userId };
-            return Created();
-
-        }
-
-        [HttpPost("/api/restaurants/{restaurantId}/menu")]
-        public async Task<IActionResult> AddItemToMenu(string restaurantId, MenuItemCreateRequestModel model)
-        {
-            var userId = this.GetUserId();
-            await this.restaurantService.AddItemToRestaurant(userId, restaurantId, model);
-            return Created();
-        }
-
-
-
-        [HttpGet("{id?}")]
-        public async Task<IActionResult> GetRestaurant(string? id)
-        {
-            var restaurants = await this.restaurantService.GetRestaurants<RestaurantListingModel>();
             return Ok(restaurants);
         }
 
+        [HttpPost("/api/restaurant")]
+        public async Task<IActionResult> CreateRestaurant(CreateRestaurantRequestModel model)
+        {
+            var userId = this.GetUserId();
+            var result = await this.restaurantService.CreateRestaurant(model, userId);
+            return Ok(result);
+        }
+
+        [HttpPost("/api/restaurant/{restaurantId}/menu")]
+        public async Task<IActionResult> AddItemToMenu(string restaurantId, CreateItemRequestModel model)
+        {
+            var userId = this.GetUserId();
+            await this.restaurantService.AddItemToRestaurantMenu(
+                model,
+                restaurantId,
+                userId);
+            return Ok();
+        }
     }
 }

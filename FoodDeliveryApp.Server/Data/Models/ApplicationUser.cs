@@ -6,6 +6,6 @@
     {
         public string? Token { get; set; }
 
-        public ICollection<Restaurant> Restaurants { get; set;} = new HashSet<Restaurant>();
+        public ICollection<Restaurant> Restaurants { get; set; } = new HashSet<Restaurant>();
     }
 }

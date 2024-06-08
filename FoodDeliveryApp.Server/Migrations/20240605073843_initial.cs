@@ -183,8 +183,9 @@ namespace FoodDeliveryApp.Server.Migrations
                 {
                     id = table.Column<string>(type: "text", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
-                    image_url = table.Column<string>(type: "text", nullable: true),
-                    user_id = table.Column<string>(type: "text", nullable: false)
+                    description = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false),
+                    image_url = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -195,27 +196,6 @@ namespace FoodDeliveryApp.Server.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "items",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    price = table.Column<decimal>(type: "numeric", nullable: true),
-                    description = table.Column<string>(type: "text", nullable: true),
-                    category_id = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_items", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_items_categories_category_id",
-                        column: x => x.category_id,
-                        principalTable: "categories",
-                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -237,27 +217,47 @@ namespace FoodDeliveryApp.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "menu_item",
+                name: "items",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    item_id = table.Column<int>(type: "integer", nullable: false),
-                    menu_id = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "text", nullable: false),
+                    price = table.Column<decimal>(type: "numeric", nullable: false),
+                    menu_id = table.Column<string>(type: "text", nullable: false),
+                    image_url = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_menu_item", x => x.id);
+                    table.PrimaryKey("pk_items", x => x.id);
                     table.ForeignKey(
-                        name: "fk_menu_item_items_item_id",
-                        column: x => x.item_id,
-                        principalTable: "items",
+                        name: "fk_items_menus_menu_id",
+                        column: x => x.menu_id,
+                        principalTable: "menus",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "category_item",
+                columns: table => new
+                {
+                    categories_id = table.Column<int>(type: "integer", nullable: false),
+                    items_id = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_category_item", x => new { x.categories_id, x.items_id });
+                    table.ForeignKey(
+                        name: "fk_category_item_categories_categories_id",
+                        column: x => x.categories_id,
+                        principalTable: "categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "fk_menu_item_menus_menu_id",
-                        column: x => x.menu_id,
-                        principalTable: "menus",
+                        name: "fk_category_item_items_items_id",
+                        column: x => x.items_id,
+                        principalTable: "items",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -305,18 +305,13 @@ namespace FoodDeliveryApp.Server.Migrations
                 column: "parent_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_items_category_id",
+                name: "ix_category_item_items_id",
+                table: "category_item",
+                column: "items_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_items_menu_id",
                 table: "items",
-                column: "category_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_menu_item_item_id",
-                table: "menu_item",
-                column: "item_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_menu_item_menu_id",
-                table: "menu_item",
                 column: "menu_id");
 
             migrationBuilder.CreateIndex(
@@ -349,19 +344,19 @@ namespace FoodDeliveryApp.Server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "menu_item");
+                name: "category_item");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "categories");
 
             migrationBuilder.DropTable(
                 name: "items");
 
             migrationBuilder.DropTable(
                 name: "menus");
-
-            migrationBuilder.DropTable(
-                name: "categories");
 
             migrationBuilder.DropTable(
                 name: "restaurants");
