@@ -59,7 +59,7 @@ const Header = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="nav-link text-white">
+                  <Link to="/Restaurants" className="nav-link text-white">
                     <svg
                       className="bi d-block mx-auto mb-1"
                       width="24"
@@ -68,7 +68,7 @@ const Header = () => {
                       <use xlinkHref="#grid" />
                     </svg>
                     Products
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#" className="nav-link text-white">

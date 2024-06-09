@@ -3,9 +3,11 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import * as Icon from 'react-bootstrap-icons';
 import Layout from "./components/Layout.jsx";
 import Register from "./components/Register/Register.jsx";
 import Login from "./components/Login/Login.jsx";
+import RestaurantListing from "./components/RestaurantListing/RestaurantListing.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/Login",
         element: <Login></Login>,
+      },
+      {
+        path: "/Restaurants",
+        element: <RestaurantListing></RestaurantListing>,
       },
     ],
   },
