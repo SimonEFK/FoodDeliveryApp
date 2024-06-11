@@ -14,7 +14,7 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-const Register = () => {
+const RegisterForm = () => {
   const [registerState, setRegisterState] = useState("unknown");
 
   const onSubmit = async (data) => {
@@ -140,4 +140,4 @@ const Register = () => {
     </>
   );
 };
-export default Register;
+export default RegisterForm;

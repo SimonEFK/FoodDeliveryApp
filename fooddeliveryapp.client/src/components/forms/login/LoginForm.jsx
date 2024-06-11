@@ -7,7 +7,7 @@ const loginSchema = z.object({
   password: z.string().min(10),
 });
 
-const Login = () => {
+const LoginForm = () => {
   const onSubmit = async (data) => {
     const url = "https://localhost:44341/api/UserAuthentication/Login";
     const options = {
@@ -78,4 +78,4 @@ const Login = () => {
     </>
   );
 };
-export default Login;
+export default LoginForm;
