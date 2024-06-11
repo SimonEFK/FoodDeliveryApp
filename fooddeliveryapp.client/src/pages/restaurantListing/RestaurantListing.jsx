@@ -1,5 +1,5 @@
+import RestaurantCard from "../../components/restaurantCard/RestaurantCard.jsx"
 import { useState, useEffect } from "react";
-import "./RestaurantListing.css"
 
 
 
@@ -37,21 +37,7 @@ const RestaurantListing = () => {
       <div className="row">
         {restaurants.map((x) => (
           <div className="col-12 col-lg-6 col-xl-8 mb-3" key={x.id}>
-            <div className="overflow-hidden rounded position-relative" style={
-              {
-                height: "250px"
-
-              }}>
-              <img src={x.imageUrl} alt={x.name} style={{
-                width: "100%",
-                height: "100%",
-                objectPosition: "center center",
-                objectFit: "cover"
-              }} />
-              <div className="test">
-                <p className="m-0 text-start">{x.name}</p>
-              </div>
-            </div>
+            {<RestaurantCard restaurant={x}></RestaurantCard>}
           </div>
         ))}
 

@@ -3,11 +3,11 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as Icon from 'react-bootstrap-icons';
-import Layout from "./components/Layout.jsx";
-import Register from "./components/Register/Register.jsx";
-import Login from "./components/Login/Login.jsx";
-import RestaurantListing from "./components/RestaurantListing/RestaurantListing.jsx";
+import Layout from "./layout/Layout.jsx";
+import RestaurantListing from "./pages/restaurantListing/RestaurantListing.jsx";
+import OwnerPanel from "./pages/ownerPanel/OwnerPanel.jsx";
+import Register from "./pages/register/Register.jsx";
+import Login from "./pages/login/Login.jsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +17,7 @@ const router = createBrowserRouter([
       {
         path: "/Register",
         element: <Register></Register>,
+
       },
       {
         path: "/Login",
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
         path: "/Restaurants",
         element: <RestaurantListing></RestaurantListing>,
       },
+      {
+        path: "/OwnerPanel",
+        element: <OwnerPanel></OwnerPanel>
+      }
     ],
   },
 ]);
